@@ -113,17 +113,13 @@ client.connect(err => {
 
         socket.on('updateRating', data => {
             if (data.status === "likes") {
-                console.log(data);
                 let newLikes;
-                console.log(data._id);
                 clique.findOne({ _id: ObjectId(`${data._id}`) }).then(
                     document => {
                         if (data.isClicked === false) {
                             newLikes = document.likes + 1;
-                            console.log(newLikes);    
                         } else {
                             newLikes = document.likes - 1;
-                            console.log(newLikes);
                         }
                         
                         clique.updateOne(
@@ -133,17 +129,13 @@ client.connect(err => {
                     }
                 );
             } else if (data.status === "smarts") {
-                console.log(data);
                 let newSmarts;
-                console.log(data._id);
                 clique.findOne({ _id: ObjectId(`${data._id}`) }).then(
                     document => {
                         if (data.isClicked === false) {
                             newSmarts = document.smarts + 1;
-                            console.log(newSmarts);    
                         } else {
                             newSmarts = document.smarts - 1;
-                            console.log(newSmarts);
                         }
                         
                         clique.updateOne(
@@ -153,17 +145,13 @@ client.connect(err => {
                     }
                 );
             } else if (data.status === "laughs") {
-                console.log(data);
                 let newLaughs;
-                console.log(data._id);
                 clique.findOne({ _id: ObjectId(`${data._id}`) }).then(
                     document => {
                         if (data.isClicked === false) {
                             newLaughs = document.laughs + 1;
-                            console.log(newLaughs);    
                         } else {
                             newLikes = document.likes - 1;
-                            console.log(newLaughs);
                         }
                         
                         clique.updateOne(
