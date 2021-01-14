@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+  <title>GeekClique App</title>
+</head>
+<body>
+  <div class="chat-container">
+    <header class="chat-header">
+      <h1><img src="./images/einstein.png" alt="img-einstein">GeekClique</h1>
+      <span>
+        <a class="btn" data-modal-target="#modal" id="comments-button">View Top Rated Comments</a>
+        <a class="btn" data-modal-target="#modal2" id="change-room-button">Change Room</a>
+      </span>
+    </header>
+    <section>
+      <div class="modal" id="modal">
+        <div class="modal-header">
+          <div class="title">Top Rated Comments</div>
+          <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="mostLikedMessages">
+            <h1>Most Liked Comments</h1>
+          </div>
+          <div id="smartestMessages">
+            <h1 >Smartest Comments</h1>
+          </div>
+          <div id="funniestMessages">
+            <h1>Funniest Comments</h1>
+          </div>
+        </div>
+      </div>
+      <div id="overlay"></div>
+    </section>
+    <section>
+      <div class="modal" id="modal2">
+        <div class="modal-header">
+          <div class="title">Change Room</div>
+          <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form action="chat.html" id="change-room-form">
+            <div class="form-control">
+              <div class="radio-choice-buttons">
+                <input type="radio" id="keep-username-button" name="username-change" value="keep-username" required>
+                <label for="keep-username-button">Keep Current Username</label>
+                <input type="radio" id="change-username-button" name="username-change" value="change-username" required>
+                <label for="change-username-button">Change Username</label>
+              </div>
+
+              <div id="create-username" style="display: none;">
+                <input type="text" class="username-create" name="username" placeholder="Enter new username..." id="input-username" required>
+              </div>
+
+              <div id="join-existing-room">
+                <select name="room" id="room-select">
+                  <option value="" disabled selected>Choose room to join...</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Physics">Physics</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Biology">Biology</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Psychology">Psychology</option>
+                </select>
+              </div>
+            
+            </div>
+            <button type="submit" class="btn" id="change-chat-button">Join New Chat</button>
+          </form>
+        </div>
+      </div>
+      <div id="overlay"></div>
+    </section>
+    <main class="chat-main">
+      <div class="chat-sidebar">
+        <h3><i class="fas fa-comments"></i> Room Name:</h3>
+        <h2 id="room-name"></h2>
+        <h3><i class="fas fa-users"></i> Users</h3>
+        <ul id="users"></ul>
+      </div>
+      <div class="chat-messages"></div>
+    </main>
+    <div class="chat-form-container">
+      <form id="chat-form">
+        <input
+          id="msg"
+          type="text"
+          placeholder="Enter Message"
+          required
+          autocomplete="off"
+        />
+        <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" 
+    integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w==" 
+    crossorigin="anonymous"
+  ></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="./js/main.js"></script>
+  <script>
+    $(function() {
+      $('input[name="username"]').on('click', function() {
+        console.log('this is working');
+        if ($(this).val() == 'keep-username') {
+          // $('#create-username').hide();
+        }
+        else if ($(this).val() == 'create-username') {
+          $('#create-username').show();
+
+        }
+      });
+    });
+  </script>
+</body>
+</html>
