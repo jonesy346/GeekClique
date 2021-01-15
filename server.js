@@ -17,10 +17,7 @@ const admin = 'Admin';
 app.use(express.static(path.join(__dirname, 'public')));
 const PORT = process.env.PORT || 27017;
 
-// const cluster = process.env.CLUSTER;
-const password = process.env.PASSWORD;
-const db = process.env.DB;
-const uri = `mongodb+srv://admin:${password}@cluster0.xzqxn.mongodb.net/${db}?retryWrites=true&w=majority`;
+const uri = process.env.MONGODB_URI;
 let clique = '';
 
 const client = new MongoClient(uri, { 
