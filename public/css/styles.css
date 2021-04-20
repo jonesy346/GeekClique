@@ -81,7 +81,8 @@ a {
 }
 
 .chat-header .btn:active {
-	background-color: purple;
+	/* background-color: purple; */
+	background: none;
 }
 
 .chat-header img {
@@ -178,11 +179,11 @@ a {
 }
 
 .chat-form-container .btn:hover {
-	background-color: yellowgreen;
+	/* background-color: yellowgreen; */
 }
 
 .chat-form-container .btn:active {
-	background-color: purple;
+	/* background-color: purple; */
 }
 
 /* Rated Messages Form */
@@ -306,11 +307,12 @@ a {
 }
 
 #change-room-form .btn:hover {
-	background-color: yellowgreen;
+	/* background-color: yellowgreen; */
 }
 
 #change-room-form .btn:active {
-	background-color: purple;
+	/* background-color: purple; */
+	/* background: var(--strong-orange); */
 }
 
 /* Individual Messages */
@@ -400,7 +402,8 @@ a {
 }
 
 .modal-header .close-button:active {
-	background: purple;
+	/* background: purple; */
+	border: none;
 }
 
 .modal-body {
@@ -510,11 +513,11 @@ a {
 }
 
 .join-main .btn:hover {
-	background-color: yellowgreen;
+	/* background-color: yellowgreen; */
 }
 
 .join-main .btn:active {
-	background-color: purple;
+	/* background-color: purple; */
 }
 
 @media (max-width: 700px) {

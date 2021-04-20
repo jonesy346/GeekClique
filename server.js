@@ -148,7 +148,7 @@ client.connect(err => {
                         if (data.isClicked === false) {
                             newLaughs = document.laughs + 1;
                         } else {
-                            newLikes = document.likes - 1;
+                            newLaughs = document.laughs - 1;
                         }
                         
                         clique.updateOne(

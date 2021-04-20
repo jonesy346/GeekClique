@@ -212,6 +212,7 @@ const showMessage = message => {
         div.querySelector(".counter-einstein").setAttribute("style", "display: none;");
     } 
     if (message.laughs === 0) {
+        console.log(message.laughs);
         div.querySelector(".counter-laugh").setAttribute("style", "display: none;");
     } 
     chatMessages.append(div);
