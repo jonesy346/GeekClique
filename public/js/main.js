@@ -14,50 +14,20 @@ const { username, roomOptions, room } = Qs.parse(location.search, {
 
 const socket = io();
 
-// Join chatroom
+// JOIN CHATROOM
+
 socket.emit('joinRoom', { username, roomOptions, room });
 
-// Get a room and users
+// GET A ROOM AND USERS
+
 socket.on('roomUsers', ({ room, users }) => {
     outputRoomName(room);
     outputUsers(users);
 });
 
-// TOP RATINGS MODAL
+// UPDATE RATING BASED ON ONCLICK EVENT
 
-// Update rating based on onclick event
-const updateRating = e => {
-    const messageId = e.target.parentElement.parentElement.dataset.messageId;
-    const classList = e.target.classList;
-    const isClicked = classList.contains("active");
-    
-    if (classList.contains("img-heart")) {
-        socket.emit("updateRating", { _id: messageId, status: "likes", isClicked: isClicked });
-    } else if (classList.contains("img-einstein")) {
-        socket.emit("updateRating", { _id: messageId, status: "smarts", isClicked: isClicked});
-    } else if (classList.contains("img-laugh")) {
-        socket.emit("updateRating", { _id: messageId, status: "laughs", isClicked: isClicked});
-    }
-
-    if (!isClicked) {
-        e.target.nextElementSibling.innerHTML = Number(e.target.nextElementSibling.innerHTML) + 1;
-    } else if (isClicked) {
-        e.target.nextElementSibling.innerHTML = Number(e.target.nextElementSibling.innerHTML) - 1;
-    }
-
-    if (e.target.nextElementSibling.innerHTML == 0) {
-        e.target.nextElementSibling.setAttribute("style", "display: none;");
-    } else {
-        e.target.nextElementSibling.removeAttribute("style");
-    }
-
-    classList.toggle("active");
-};
-
-const updateRatingFromChat = e => {  
-    updateRating(e);
-
-    // update all ratings in modal body  
+const updateRatings = e => {    
     let status;
 
     const ratingClassList = e.target.classList;
@@ -70,86 +40,35 @@ const updateRatingFromChat = e => {
     }
 
     const messageId = e.target.parentElement.parentElement.dataset.messageId;    
-    const chatMessages = modalBody.querySelectorAll("[data-message-id='" + messageId + "']");    
-    const chatMessageRatings = [];
-    
-    chatMessages.forEach(msg => {
-        chatMessageRatings.push(msg.querySelector("." + status));
-    });
-    
-    const classList = chatMessageRatings[0].classList;
-    const isClicked = classList.contains("active");
-
-    chatMessageRatings.forEach(chatMessageRating => {
-        if (!isClicked) {
-            chatMessageRating.nextElementSibling.innerHTML = Number(chatMessageRating.nextElementSibling.innerHTML) + 1;
-        } else if (isClicked) {
-            chatMessageRating.nextElementSibling.innerHTML = Number(chatMessageRating.nextElementSibling.innerHTML) - 1;
-        }
-    
-        if (chatMessageRating.nextElementSibling.innerHTML == 0) {
-            chatMessageRating.nextElementSibling.setAttribute("style", "display: none;");
-        } else {
-            chatMessageRating.nextElementSibling.removeAttribute("style");
-        }
-
-        chatMessageRating.classList.toggle("active");
-    });
-
-};
-
-const updateRatingFromRatings = e => {    
-    // update rating in chat form
-    let status;
-
-    const ratingClassList = e.target.classList;
-    if (ratingClassList.contains("img-heart")) {
-        status = "img-heart";
-    } else if (ratingClassList.contains("img-einstein")) {
-        status = "img-einstein";
-    } else if (ratingClassList.contains("img-laugh")) {
-        status = "img-laugh";
-    }
-
-    const messageId = e.target.parentElement.parentElement.dataset.messageId;    
-    const chatMessage = chatMessages.querySelector("[data-message-id='" + messageId + "']");
     const isClicked = ratingClassList.contains("active");
-    const chatMessageRating = chatMessage.querySelector("." + status);
 
-    if (ratingClassList.contains("img-heart")) {
+    // emit request to database to update
+    if (status === "img-heart") {
         socket.emit("updateRating", { _id: messageId, status: "likes", isClicked: isClicked });
-    } else if (ratingClassList.contains("img-einstein")) {
+    } else if (status === "img-einstein") {
         socket.emit("updateRating", { _id: messageId, status: "smarts", isClicked: isClicked});
-    } else if (ratingClassList.contains("img-laugh")) {
+    } else if (status === "img-laugh") {
         socket.emit("updateRating", { _id: messageId, status: "laughs", isClicked: isClicked});
     }
 
-    if (!isClicked) {
-        chatMessageRating.nextElementSibling.innerHTML = Number(chatMessageRating.nextElementSibling.innerHTML) + 1;
-    } else if (isClicked) {
-        chatMessageRating.nextElementSibling.innerHTML = Number(chatMessageRating.nextElementSibling.innerHTML) - 1;
-    }
-
-    if (chatMessageRating.nextElementSibling.innerHTML == 0) {
-        chatMessageRating.nextElementSibling.setAttribute("style", "display: none;");
-    } else {
-        chatMessageRating.nextElementSibling.removeAttribute("style");
-    }
-
-    chatMessageRating.classList.toggle("active");
-
-    // update rating in ratings form
+    // select all the HTML relevant to the clicked message (including in the modal form and chat body)
     const ratedChatMessages = modalBody.querySelectorAll("[data-message-id='" + messageId + "']");
     const chatMessageRatings = [];
-    
+
     ratedChatMessages.forEach(msg => {
         chatMessageRatings.push(msg.querySelector("." + status));
     });
 
+    const chatMessage = chatMessages.querySelector("[data-message-id='" + messageId + "']");
+    const chatMessageRating = chatMessage.querySelector("." + status);
+
+    chatMessageRatings.push(chatMessageRating);
+
+    // update all the ratings at once
     chatMessageRatings.forEach(rating => {
         if (!isClicked) {
             rating.nextElementSibling.innerHTML = Number(rating.nextElementSibling.innerHTML) + 1;
-        } else if (isClicked) {
+        } else {
             rating.nextElementSibling.innerHTML = Number(rating.nextElementSibling.innerHTML) - 1;
         }
     
@@ -161,8 +80,9 @@ const updateRatingFromRatings = e => {
 
         rating.classList.toggle("active");
     });
-  
 };
+
+// CHANGE USERNAME SETTING
 
 const changeUsername = e => {
     const inputUsername = document.getElementById('input-username');
@@ -180,15 +100,16 @@ const changeUsername = e => {
 };
 
 // MODAL CHANGE ROOM FUNCTIONS
+
 const changeUsernameToggles = document.querySelectorAll('input[name="username-change"]');
 changeUsernameToggles.forEach(button => {
     button.addEventListener('click', changeUsername);
 });
 
+// OUTPUT A MESSAGE FROM SERVER
 
-
-// Output a messsage from server
-const showMessage = message => {
+const showMessage = (message, status) => {
+    // construct message and show it on the DOM
     const div = document.createElement('div');
     div.classList.add('message');
     div.setAttribute('data-message-id', `${message._id}`);
@@ -204,37 +125,7 @@ const showMessage = message => {
         <img src="../images/laugh.png" alt="img-laugh" class="img-laugh">
         <span class="counter-laugh">${message.laughs}</span>
     </span>`;
-    div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatingFromChat)});
-    if (message.likes === 0) {
-        div.querySelector(".counter-heart").setAttribute("style", "display: none;");
-    } 
-    if (message.smarts === 0) {
-        div.querySelector(".counter-einstein").setAttribute("style", "display: none;");
-    } 
-    if (message.laughs === 0) {
-        console.log(message.laughs);
-        div.querySelector(".counter-laugh").setAttribute("style", "display: none;");
-    } 
-    chatMessages.append(div);
-};
 
-const showRatedMessage = (status, message) => {
-    const div = document.createElement('div');
-    div.classList.add('message');
-    div.setAttribute('data-message-id', `${message._id}`);
-    div.innerHTML = `<p class="meta">${message.username}<span>${message.time}</span></p>
-    <p class="text">
-        ${message.text}
-    </p>
-    <span class="img-container">
-        <img src="../images/heart.png" alt="img-heart" class="img-heart">
-        <span class="counter-heart">${message.likes}</span>
-        <img src="../images/einstein.png" alt="img-einstein" class="img-einstein">
-        <span class="counter-einstein">${message.smarts}</span>
-        <img src="../images/laugh.png" alt="img-laugh" class="img-laugh">
-        <span class="counter-laugh">${message.laughs}</span>
-    </span>`;
-    div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatingFromRatings)});
     if (message.likes === 0) {
         div.querySelector(".counter-heart").setAttribute("style", "display: none;");
     } 
@@ -245,11 +136,18 @@ const showRatedMessage = (status, message) => {
         div.querySelector(".counter-laugh").setAttribute("style", "display: none;");
     } 
 
-    if (status === 'likes') {
+    // add functionality when a rating option is clicked on
+    if (!status) {
+        div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatings)});
+        chatMessages.append(div);
+    } else if (status === 'likes') {
+        div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatings)});
         mostLikedMessages.append(div);
     } else if (status === 'smarts') {
+        div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatings)});
         smartestMessages.append(div);
     } else if (status === 'laughs') {
+        div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatings)});
         funniestMessages.append(div);
     }
 }
@@ -264,7 +162,8 @@ const showAdminMessage = message => {
     chatMessages.append(div);
 };
 
-// Buttons
+// MODAL BUTTONS AND FUNCTIONALITY
+
 const openModalButtons = document.querySelectorAll('[data-modal-target]');
 const closeModalButtons = document.querySelectorAll('[data-close-button]');
 const overlay = document.getElementById('overlay');
@@ -302,7 +201,7 @@ const closeModal = modal => {
     overlay.classList.remove('active');
 };
 
-// Socket code
+// SOCKET CODE
 
 socket.on('output', res => {
     res.forEach(msg => {
@@ -326,23 +225,24 @@ socket.on('message', message => {
 
 socket.on('mostLikedMessages', res => {
     res.forEach(msg => {
-        showRatedMessage('likes', msg);
+        showMessage(msg, 'likes');
     });
 });
 
 socket.on('smartestMessages', res => {
     res.forEach(msg => {
-        showRatedMessage('smarts', msg);
+        showMessage(msg, 'smarts');
     });
 });
 
 socket.on('funniestMessages', res => {
     res.forEach(msg => {
-        showRatedMessage('laughs', msg);
+        showMessage(msg, 'laughs');
     });
 });
 
-// Event listener for send button
+// EVENT LISTENER FOR SEND BUTTON
+
 chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -355,17 +255,20 @@ chatForm.addEventListener('submit', (e) => {
     e.target.elements.msg.focus();
 });
 
-// Event listener for change room button
+// EVENT LISTENER FOR CHANGE ROOM BUTTON
+
 changeChatButton.addEventListener('submit', (e) => {
     socket.emit('disconnect');
 });
 
-// Add room name to DOM
+// ADD ROOM NAME TO DOM
+
 const outputRoomName = room => {
     roomName.innerText = room;
 };
 
-// Add users to DOM
+// ADD USERS TO DOM
+
 const outputUsers = users => {
     userList.innerHTML = `
         ${users.map(user => `<li>${user.username}</li>`).join('')}

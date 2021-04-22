@@ -34,13 +34,6 @@
 						/>
 					</div>
 					<div class="form-control">
-						<!-- <div class="radio-choice-buttons">
-							<input type="radio" id="join-existing-room-button" name="roomOptions" value="join-existing-room" required>
-							<label for="join-existing-room-button">Join an existing room</label>
-							<input type="radio" id="create-room-button" name="roomOptions" value="create-room" required>
-							<label for="create-room-button">Create a secret room...</label>
-						</div> -->
-
 						<div id="join-existing-room">
 							<label for="room">Room</label>
 							<select name="room" id="room-select">
@@ -53,35 +46,11 @@
 								<option value="Psychology">Psychology</option>
 							</select>
 						</div>
-
-						<!-- <div id="create-room" style="display: none">
-							<input type="text" class="room-create" name="room" placeholder="Enter room name...">
-						</div> -->
 					</div>
 					<button type="submit" class="btn">Join Chat</button>
 				</form>
 			</main>
 		</div>
-		<!-- <script>
-			$(function() {
-				$('input[name="roomOptions"]').on('click', function() {
-					if ($(this).val() == 'join-existing-room') {
-						$('#join-existing-room').show();
-						$('#room-select').attr("name", "room");
-						$('#create-room').hide();
-						$('.room-create').attr("name","");
-
-					}
-					else if ($(this).val() == 'create-room') {
-						$('#create-room').show();
-						$('.room-create').attr("name", "room");
-						$('#join-existing-room').hide();
-						$('#room-select').attr("name", "");
-
-					}
-				});
-			});
-		</script> -->
 		<script src="../public/js/index.js"></script>
 	</body>
 </html>

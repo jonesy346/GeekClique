@@ -63,7 +63,7 @@ client.connect(err => {
             });
 
             // get rated chats from mongo collection
-            clique.find().limit(3).sort({hearts:-1}).toArray(function(err, res) {
+            clique.find().limit(3).sort({likes:-1}).toArray(function(err, res) {
                 if (err) throw err;
 
                 // emit the most liked messages
