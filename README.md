@@ -6,10 +6,12 @@
 * [Setup](#setup)
 
 ## General info
-This project is simple Lorem ipsum dolor generator.
+This project is a simple chat app designed with Socket.io. Different users can join the app at once, send messages in real time, and rate messages.
 	
 ## Technologies
 Project is created with:
+* Socket.IO
+* MongoDB
 * Lorem version: 12.3
 * Ipsum version: 2.33
 * Ament library version: 999
