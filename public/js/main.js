@@ -257,9 +257,7 @@ socket.on('output', res => {
 socket.on('message', message => {
     if (message.username === 'Admin') {
         showAdminMessage(message, chatMessages);
-        return;
-    }
-    else {
+    } else {
         showMessage(message);
     }
     // Scroll down
