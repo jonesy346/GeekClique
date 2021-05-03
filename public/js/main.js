@@ -280,40 +280,6 @@ socket.on('mostLikedMessages', res => {
     }
 });
 
-// socket.on('sortedRatedMessages', data => {
-//     let location;
-//     console.log(data);
-//     console.log(data.location);
-//     let array = [mostLikedMessages, smartestMessages, funniestMessages];
-
-//     array.forEach(element => {
-//         if (data.location === 'mostLikedMessages') {
-//             console.log('ran likes');
-//             location = element;
-//         } else if (data.location === 'smartestMessages') {
-//             console.log('ran smarts')
-//             location = element;
-//         } else if (data.location === 'funniestMessages') {
-//             console.log('ran laughs')
-//             location = element;
-//         }
-//     });
-
-//     console.log(location);
-
-//     if (data.res.length !== 0) {
-//         data.res.forEach(msg => {
-//             showMessage(msg, 'likes');
-//         });
-//     } else {
-//         showAdminMessage({
-//             username: "Admin",
-//             time: "",
-//             text: "No messages in this room yet! (If a message has been sent, refresh the page)"
-//         }, location);
-//     }
-// });
-
 socket.on('smartestMessages', res => {
     if (res.length !== 0) {
         res.forEach(msg => {
