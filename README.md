@@ -32,3 +32,6 @@ $ npm start
 ## Acknowledgements
 Direct inspiration for project comes from Traversy Media's project. 
 
+![image](https://user-images.githubusercontent.com/73217609/116842352-26883380-ab91-11eb-96e1-0b8d4536965e.png)
+
+
