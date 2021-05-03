@@ -26,13 +26,22 @@
         </div>
         <div class="modal-body">
           <div id="mostLikedMessages">
-            <h1>Most Liked Comments</h1>
+            <span class="modal-body-header">
+              <h1>Most Liked Comments</h1>
+              <img src="./images/heart.png" alt="">
+            </span>
           </div>
           <div id="smartestMessages">
-            <h1 >Smartest Comments</h1>
+            <span class="modal-body-header">
+              <h1>Smartest Comments</h1>
+              <img src="./images/einstein.png" alt="">
+            </span>
           </div>
           <div id="funniestMessages">
-            <h1>Funniest Comments</h1>
+            <span class="modal-body-header">
+              <h1>Funniest Comments</h1>
+              <img src="./images/laugh.png" alt="">
+            </span>
           </div>
         </div>
       </div>
@@ -59,7 +68,7 @@
               </div>
 
               <div id="join-existing-room">
-                <select name="room" id="room-select">
+                <select name="room" id="room-select" required>
                   <option value="" disabled selected>Choose room to join...</option>
                   <option value="Mathematics">Mathematics</option>
                   <option value="Physics">Physics</option>
@@ -99,7 +108,6 @@
       </form>
     </div>
   </div>
-
   <script 
     src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" 
     integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w==" 

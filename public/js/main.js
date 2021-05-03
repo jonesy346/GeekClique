@@ -12,7 +12,15 @@ const { username, roomOptions, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true
 });
 
+const myStorage = window.localStorage;
+
 const socket = io();
+
+// CHECK ARRAY FUNCTION FOR LATER USAGE
+
+const arrayEquals = (a, b) => {
+    return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
+}
 
 // JOIN CHATROOM
 
@@ -39,7 +47,7 @@ const updateRatings = e => {
         status = "img-laugh";
     }
 
-    const messageId = e.target.parentElement.parentElement.dataset.messageId;    
+    const messageId = e.target.parentElement.parentElement.parentElement.dataset.messageId;    
     const isClicked = ratingClassList.contains("active");
 
     // emit request to database to update
@@ -49,6 +57,22 @@ const updateRatings = e => {
         socket.emit("updateRating", { _id: messageId, status: "smarts", isClicked: isClicked});
     } else if (status === "img-laugh") {
         socket.emit("updateRating", { _id: messageId, status: "laughs", isClicked: isClicked});
+    }
+
+    // store the message in session storage
+    const statusArray = ["img-heart", "img-einstein", "img-laugh"];
+    let tempArray = JSON.parse(myStorage.getItem(messageId)) ? JSON.parse(myStorage.getItem(messageId)) : [false, false, false];
+
+    for (i = 0; i < statusArray.length; i++) {
+        if (statusArray[i] === status) {
+            tempArray[i] = !tempArray[i];
+        }
+    }
+
+    if (arrayEquals(tempArray, [false, false, false])) {
+        myStorage.removeItem(messageId);
+    } else {
+        myStorage.setItem(messageId, JSON.stringify(tempArray));
     }
 
     // select all the HTML relevant to the clicked message (including in the modal form and chat body)
@@ -79,6 +103,8 @@ const updateRatings = e => {
         }
 
         rating.classList.toggle("active");
+        rating.nextElementSibling.classList.toggle("active-counter");
+    
     });
 };
 
@@ -109,6 +135,16 @@ changeUsernameToggles.forEach(button => {
 // OUTPUT A MESSAGE FROM SERVER
 
 const showMessage = (message, status) => {
+    // retrieve relevant ratings/properties from sessionStorage
+    const ratingsArray = JSON.parse(myStorage.getItem(message._id));
+
+    let activeRatingsArray = Array(6).fill('');
+    if(ratingsArray) {
+        [activeRatingsArray[0], activeRatingsArray[1]] = [ratingsArray[0] ? 'active' : '', ratingsArray[0] ? 'active-counter' : ''];
+        [activeRatingsArray[2], activeRatingsArray[3]] = [ratingsArray[1] ? 'active' : '', ratingsArray[1] ? 'active-counter' : ''];
+        [activeRatingsArray[4], activeRatingsArray[5]] = [ratingsArray[2] ? 'active' : '', ratingsArray[2] ? 'active-counter' : ''];
+    }
+
     // construct message and show it on the DOM
     const div = document.createElement('div');
     div.classList.add('message');
@@ -118,12 +154,18 @@ const showMessage = (message, status) => {
         ${message.text}
     </p>
     <span class="img-container">
-        <img src="../images/heart.png" alt="img-heart" class="img-heart">
-        <span class="counter-heart">${message.likes}</span>
-        <img src="../images/einstein.png" alt="img-einstein" class="img-einstein">
-        <span class="counter-einstein">${message.smarts}</span>
-        <img src="../images/laugh.png" alt="img-laugh" class="img-laugh">
-        <span class="counter-laugh">${message.laughs}</span>
+        <span class="rating-container">
+            <img src="../images/heart.png" alt="img-heart" class="img-heart ${activeRatingsArray[0]}">
+            <span class="counter-heart ${activeRatingsArray[1]}">${message.likes}</span>
+        </span>
+        <span class="rating-container">
+            <img src="../images/einstein.png" alt="img-einstein" class="img-einstein ${activeRatingsArray[2]}">
+            <span class="counter-einstein ${activeRatingsArray[3]}">${message.smarts}</span>
+        </span>
+        <span class="rating-container">
+            <img src="../images/laugh.png" alt="img-laugh" class="img-laugh ${activeRatingsArray[4]}">
+            <span class="counter-laugh ${activeRatingsArray[5]}">${message.laughs}</span>
+        </span>
     </span>`;
 
     if (message.likes === 0) {
@@ -138,28 +180,29 @@ const showMessage = (message, status) => {
 
     // add functionality when a rating option is clicked on
     if (!status) {
-        div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatings)});
+        div.querySelectorAll(".img-heart, .img-einstein, .img-laugh").forEach(element => {element.addEventListener("click", updateRatings)});
         chatMessages.append(div);
     } else if (status === 'likes') {
-        div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatings)});
+        div.querySelectorAll(".img-heart, .img-einstein, .img-laugh").forEach(element => {element.addEventListener("click", updateRatings)});
         mostLikedMessages.append(div);
     } else if (status === 'smarts') {
-        div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatings)});
+        div.querySelectorAll(".img-heart, .img-einstein, .img-laugh").forEach(element => {element.addEventListener("click", updateRatings)});
         smartestMessages.append(div);
     } else if (status === 'laughs') {
-        div.querySelectorAll("span img").forEach(element => {element.addEventListener("click", updateRatings)});
+        div.querySelectorAll(".img-heart, .img-einstein, .img-laugh").forEach(element => {element.addEventListener("click", updateRatings)});
         funniestMessages.append(div);
     }
 }
 
-const showAdminMessage = message => {
+const showAdminMessage = (message, location) => {
     const div = document.createElement('div');
     div.classList.add('message');
+    div.classList.add('admin-message');
     div.innerHTML = `<p class="meta">${message.username}<span>${message.time}</span></p>
     <p class="text">
         ${message.text}
     </p>`;
-    chatMessages.append(div);
+    location.append(div);
 };
 
 // MODAL BUTTONS AND FUNCTIONALITY
@@ -213,7 +256,7 @@ socket.on('output', res => {
 
 socket.on('message', message => {
     if (message.username === 'Admin') {
-        showAdminMessage(message);
+        showAdminMessage(message, chatMessages);
         return;
     }
     else {
@@ -224,21 +267,79 @@ socket.on('message', message => {
 });
 
 socket.on('mostLikedMessages', res => {
-    res.forEach(msg => {
-        showMessage(msg, 'likes');
-    });
+    if (res.length !== 0) {
+        res.forEach(msg => {
+            showMessage(msg, 'likes');
+        });
+    } else {
+        showAdminMessage({
+            username: "Admin",
+            time: "",
+            text: "No messages in this room yet! (If a message has been sent, please refresh the page)"
+        }, mostLikedMessages);
+    }
 });
 
+// socket.on('sortedRatedMessages', data => {
+//     let location;
+//     console.log(data);
+//     console.log(data.location);
+//     let array = [mostLikedMessages, smartestMessages, funniestMessages];
+
+//     array.forEach(element => {
+//         if (data.location === 'mostLikedMessages') {
+//             console.log('ran likes');
+//             location = element;
+//         } else if (data.location === 'smartestMessages') {
+//             console.log('ran smarts')
+//             location = element;
+//         } else if (data.location === 'funniestMessages') {
+//             console.log('ran laughs')
+//             location = element;
+//         }
+//     });
+
+//     console.log(location);
+
+//     if (data.res.length !== 0) {
+//         data.res.forEach(msg => {
+//             showMessage(msg, 'likes');
+//         });
+//     } else {
+//         showAdminMessage({
+//             username: "Admin",
+//             time: "",
+//             text: "No messages in this room yet! (If a message has been sent, refresh the page)"
+//         }, location);
+//     }
+// });
+
 socket.on('smartestMessages', res => {
-    res.forEach(msg => {
-        showMessage(msg, 'smarts');
-    });
+    if (res.length !== 0) {
+        res.forEach(msg => {
+            showMessage(msg, 'smarts');
+        });
+    } else {
+        showAdminMessage({
+            username: "Admin",
+            time: "",
+            text: "No messages in this room yet! (If a message has been sent, please refresh the page)"
+        }, smartestMessages);
+    }
 });
 
 socket.on('funniestMessages', res => {
-    res.forEach(msg => {
-        showMessage(msg, 'laughs');
-    });
+    if (res.length !== 0) {
+        res.forEach(msg => {
+            showMessage(msg, 'laughs');
+        });
+    } else {
+        showAdminMessage({
+            username: "Admin",
+            time: "",
+            text: "No messages in this room yet! (If a message has been sent, please refresh the page)"
+        }, funniestMessages);
+    }
 });
 
 // EVENT LISTENER FOR SEND BUTTON

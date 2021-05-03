@@ -89,6 +89,7 @@ a {
 	height: 50px;
 	width: auto;
 	border-radius: 50%;
+	margin-right: 5px;
 }
 
 .chat-main {
@@ -135,6 +136,11 @@ a {
 	border-radius: 5px;
 }
 
+/* .chat-messages .admin-message {
+	background-color: var(--dark-color-b) !important;
+	color: var(--light-color) !important;
+} */
+
 .chat-messages .message .meta {
 	font-size: 15px;
 	font-weight: bold;
@@ -148,12 +154,29 @@ a {
 	margin-left: 3px;
 }
 
+.img-container {
+	display: flex;
+	align-items: center;
+}
+
+.img-container .rating-container {
+	display: flex;
+	align-items: center;
+}
+
+.img-container .rating-container * {
+	margin-right: 5px;
+}
+
+.img-container .rating-container .active-counter {
+	color: hsla(17, 100%, 74%, 1);
+}
+
 /* Chat Form */
 
 .chat-form-container {
 	padding: 20px 30px;
 	background: linear-gradient(-45deg, var(--strong-red) 30%, var(--strong-blue) 70%);
-
 }
 
 .chat-form-container form {
@@ -188,14 +211,27 @@ a {
 
 /* Rated Messages Form */
 
-#mostLikedMessages .message {
+.modal-body-header {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.modal-body-header img {
+	height:30px;
+	width: auto;
+	border-radius: 50%;
+	margin-left: 10px;
+}
+
+:is(#mostLikedMessages, #smartestMessages, #funniestMessages) .message {
 	padding: 10px;
 	margin-bottom: 15px;
 	background-color: var(--light-color);
 	border-radius: 5px;
 }
 
-#mostLikedMessages .message .meta {
+:is(#mostLikedMessages, #smartestMessages, #funniestMessages) .message .meta {
 	font-size: 15px;
 	font-weight: bold;
 	color: var(--dark-color-b);
@@ -203,47 +239,7 @@ a {
 	margin-bottom: 7px;
 }
 
-#mostLikedMessages .message .meta span {
-	color: #777;
-	margin-left: 3px;
-}
-
-#smartestMessages .message {
-	padding: 10px;
-	margin-bottom: 15px;
-	background-color: var(--light-color);
-	border-radius: 5px;
-}
-
-#smartestMessages .message .meta {
-	font-size: 15px;
-	font-weight: bold;
-	color: var(--dark-color-b);
-	opacity: 0.7;
-	margin-bottom: 7px;
-}
-
-#smartestMessages .message .meta span {
-	color: #777;
-	margin-left: 3px;
-}
-
-#funniestMessages .message {
-	padding: 10px;
-	margin-bottom: 15px;
-	background-color: var(--light-color);
-	border-radius: 5px;
-}
-
-#funniestMessages .message .meta {
-	font-size: 15px;
-	font-weight: bold;
-	color: var(--dark-color-b);
-	opacity: 0.7;
-	margin-bottom: 7px;
-}
-
-#funniestMessages .message .meta span {
+:is(#mostLikedMessages, #smartestMessages, #funniestMessages) .message .meta span {
 	color: #777;
 	margin-left: 3px;
 }
@@ -316,9 +312,9 @@ a {
 }
 
 /* Individual Messages */
-.chat-container .img-container {
+/* .chat-container .img-container {
 	margin-top: 20px;
-}
+} */
 
 .message .text {
 	margin-bottom: 7px;
@@ -418,9 +414,9 @@ a {
 	background: var(--light-color);
 }
 
-.modal-body h1 {
+/* .modal-body h1 {
 	margin-bottom: 10px;
-}
+} */
 
 #overlay {
 	position: fixed;
