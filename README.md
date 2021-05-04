@@ -52,5 +52,7 @@ Main page
 Finished.
 
 ## Inspiration
-* Direct inspiration for project comes from YouTuber *Traversy Media*'s tutorial project (*Realtime Chat With Users & Rooms - Socket.io, Node & Express* https://www.youtube.com/watch?v=jD7FnbI76Hg)
-* Modal design inspired by YouTuber *Web Dev Simplified* (*Build a Popup With JavaScript* https://www.youtube.com/watch?v=MBaw_6cPmAw)
+* Direct inspiration for project comes from YouTuber *Traversy Media*'s tutorial project
+	* *Realtime Chat With Users & Rooms - Socket.io, Node & Express*; https://www.youtube.com/watch?v=jD7FnbI76Hg
+* Modal design inspired by YouTuber *Web Dev Simplified* 
+	* *Build a Popup With JavaScript*; https://www.youtube.com/watch?v=MBaw_6cPmAw
