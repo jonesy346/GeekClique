@@ -43,13 +43,14 @@ Main page
 * New messages are automatically broadcast to all users in the room and saved to the database
 * All non-admin Messages are rateable
 	* Click the "heart" icon if you like a message, "einstein" icon if you think a message is smart, and "laugh" icon if you think a message is funny
-	* The ratings are saved to local storage and the database so that refreshing the page doesn't erase your ratings
-* The top rated messages are saved in the "View Top Rated Comments" button at the top of the app you can choose to like a message from this screen
+	* The ratings are saved to local storage and the database so that refreshing the page doesn't erase your ratings or those of others
+* The top rated messages are saved and interactable by clicking the "View Top Rated Comments" button at the top of the app 
+	* If you rate a message from this "Top Rated Comments" screen, it will automatically update the message rating on the main chat app (to avoid double counting)
+* You can change rooms by clicking the "Change Room" button, prompting you to either change username or keep it, along with choosing a new room
 
 ## Status
 Finished.
 
 ## Inspiration
-Direct inspiration for project comes from Traversy Media's project. 
-
-
+* Direct inspiration for project comes from YouTuber *Traversy Media*'s tutorial project (*Realtime Chat With Users & Rooms - Socket.io, Node & Express* https://www.youtube.com/watch?v=jD7FnbI76Hg)
+* Modal design inspired by YouTuber *Web Dev Simplified* (*Build a Popup With JavaScript* https://www.youtube.com/watch?v=MBaw_6cPmAw)
