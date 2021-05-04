@@ -12,7 +12,9 @@
 ## General info
 This project is a simple chat app designed with Socket.io. Different users can join the app at once, send messages in real time, rate messages, and view the trending messages in a room. If you'd like to simulate the effect of different users joining the app (by yourself), you can open the same program in Google Chrome and a separate incognito window. 
 
-Messages that you rate are saved to your local storage so that closing the browser or opening a new tab in the same window doesn't erase your liked messages. All messages are saved to a MongoDB database on my personal account, so that they remain visible and interactable even after you leave the room.
+All messages are saved to a MongoDB database on my personal account, so that they remain visible and interactable even after you leave the room or close the app. Messages that you rate in a room are saved to your local storage so that closing the browser, opening the program in a new tab in the same window, or leaving the room doesn't erase your liked messages. 
+
+*The Physics room is for sample use. It displays the functionality that is possible when messages are rated.*
 	
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/73217609/116842352-26883380-ab91-11eb-96e1-0b8d4536965e.png)
