@@ -10,7 +10,7 @@
 * [Inspiration](#inspiration)
 
 ## General info
-This project is a simple chat app designed with Socket.io. Different users can join the app at once, send messages in real time, rate messages, and view the trending messages in a room. If you'd like to simulate the effect of different users joining the app (by yourself), you can open the same program in Google Chrome and a separate incognito window. 
+This project is a group messaging chat app designed with Socket.io. Different users can join the app at once, send messages in real time, rate messages, and view the trending messages in a room. If you'd like to simulate the effect of different users joining the app (by yourself), you can open the same program in Google Chrome and a separate incognito window. 
 
 All messages are saved to a MongoDB database on my personal account, so that they remain visible and interactable even after you leave the room or close the app. Messages that you rate in a room are saved to your local storage so that closing the browser, opening the program in a new tab in the same window, or leaving the room doesn't erase your liked messages. 
 
