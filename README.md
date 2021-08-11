@@ -7,7 +7,7 @@
 * [Setup](#setup)
 * [Features](#features)
 * [Status](#status)
-* [Inspiration](#inspiration)
+* [Acknowledgments](#acknowledgments)
 
 ## General info
 This project is a group messaging chat app designed with Socket.io. Different users can join the app at once, send messages in real time, rate messages, and view the trending messages in a room. If you'd like to simulate the effect of different users joining the app (by yourself), you can open the same program in Google Chrome and a separate incognito window. 
@@ -53,7 +53,7 @@ Main page
 ## Status
 Finished.
 
-## Inspiration
+## Acknowledgments
 * Direct inspiration for project comes from YouTuber *Traversy Media*'s tutorial project
 	* *Realtime Chat With Users & Rooms - Socket.io, Node & Express*; https://www.youtube.com/watch?v=jD7FnbI76Hg
 * Modal design inspired by YouTuber *Web Dev Simplified* 
