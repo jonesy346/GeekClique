@@ -15,7 +15,7 @@ const io = socketio(server);
 const admin = 'Admin';
 
 app.use(express.static(path.join(__dirname, 'public')));
-const PORT = process.env.PORT || 1337;
+const PORT = process.env.PORT || 8080;
 
 const uri = process.env.MONGODB_URI;
 let clique = '';
