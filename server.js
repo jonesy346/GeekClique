@@ -17,8 +17,8 @@ const admin = 'Admin';
 app.use(express.static(path.join(__dirname, 'public')));
 const PORT = process.env.PORT || 8080;
 
-// const uri = process.env.MONGODB_URI;
-const uri = process.env.DATABASE_URL;
+const uri = process.env.MONGODB_URI;
+// const uri = process.env.DATABASE_URL;
 let clique = '';
 
 const client = new MongoClient(uri, { 
